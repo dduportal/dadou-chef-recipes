@@ -1,0 +1,29 @@
+{
+    "suggestions": {
+    },
+    "attributes": {
+    },
+    "maintainer_email": "damien.duportal@gmail.com",
+    "conflicting": {
+    },
+    "dependencies": {
+    },
+    "recipes": {
+      "dadou-chef-recipes": "main"
+    },
+    "providing": {
+    },
+    "platforms": {
+      "centos": []
+    },
+    "version": "0.1.0",
+    "replacing": {
+    },
+    "groupings": {
+    },
+    "name": "dadou-chef-recipes",
+    "recommendations": {
+    },
+    "description": "Set of recipes for my own dev purposes",
+    "maintainer": "Damien DUPORTAL"
+}

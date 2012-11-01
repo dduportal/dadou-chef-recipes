@@ -1,0 +1,37 @@
+server {
+    listen       <%= @ip %>:80;
+    server_name  <%= @server_name %><% @server_aliases.each do |server_alias| -%> <%= server_alias %><%end -%>;
+
+    charset utf-8;
+
+    access_log  <%= @service_root_folder %>/logs/access  main;
+
+
+    location / {
+        root <%= @docroot %>;
+        index  index.html index.htm;
+    }
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    location ~ /\.ht {
+        deny  all;
+    }
+
+    <% @upstreams.each do |name, location| -%>
+    #Access Tomcat
+    location ~ <%= location %> {
+        proxy_pass		http://<%= name %>;
+        proxy_set_header        X-Real-IP $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header        Host $http_host;
+    }
+    <% end -%>
+
+    # always serve surveillance.txt locally
+    location = /.surveillance.txt {
+        root <%= @docroot %>;
+    }
+
+}
