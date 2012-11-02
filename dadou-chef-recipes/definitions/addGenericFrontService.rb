@@ -13,8 +13,7 @@ define :addGenericFrontService do
 	serviceId = params[:service_id]
 	serviceUser = params[:service_user]
 	serviceGroup = params[:service_group]
-
-	rootFolder = "/srv/webs/#{clientId}/#{serviceId}"
+	rootFolder = params[:root_folder]
 
 	frontFolderList = {
 		rootFolder => {

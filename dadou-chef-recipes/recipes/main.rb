@@ -14,24 +14,24 @@ node[:dadou][:yum][:custom_repo].each do |customrepo|
   end
 end
 
-# # Yum global update
+# Install all needed base packages
+node[:dadou][:yum][:packages].each do |pkgToInstall|
+  package pkgToInstall do
+    action :install
+  end
+end
+
+# Yum global update
 execute "Yum_update" do
   command "sudo yum -y update"
   action :run
 end
 
-# Install all package from node attributes
-node[:dadou][:yum][:packages].each do |pkgToInstall|
-  yum_package pkgToInstall do
-    action :install
-  end
+# Create front service
+addNginxService "Create_nginx_front_service" do
+  client_id "dadou"
+  service_id "local"
+  service_user "vagrant"
+  service_group "vagrant"
+  # upstreamList { 'mytomcat' => ['127.0.0.1:8080'] }
 end
-
-# # creat front service
-# addNginxService "Create_nginx_front_service" do
-#   client_id "dadou"
-#   service_id "drupal-1"
-#   service_user "vagrant"
-#   service_group "vagrant"
-#   # upstreamList { 'mytomcat' => ['127.0.0.1:8080'] }
-# end

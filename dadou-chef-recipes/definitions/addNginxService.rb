@@ -15,7 +15,16 @@ define :addNginxService,:upstreamList => {} do
 	serviceGroup = params[:service_group]
 	upstreamList = params[:upstreamList]
 
-	rootFolder = "/srv/webs/#{clientId}/#{serviceId}"
+	rootFolder = "/srv/front/#{clientId}/#{serviceId}"
+
+	## Make sure we installed nginx
+	cookbook_file "/etc/yum.repos.d/nginx.repo" do
+		source "nginx.repo"
+		mode "0644"
+	end
+	package "nginx" do
+		action :install
+	end
 
 	## First we have to create generic struct.
 	addGenericFrontService "Create_generic_front_service" do
@@ -23,6 +32,7 @@ define :addNginxService,:upstreamList => {} do
 		service_id serviceId
 		service_user serviceUser
 		service_group serviceGroup
+		root_folder rootFolder
 	end
 
 
