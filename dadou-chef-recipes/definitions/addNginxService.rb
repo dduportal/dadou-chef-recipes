@@ -17,47 +17,50 @@ define :addNginxService,:upstreamList => {} do
 
 	rootFolder = "/srv/front/#{clientId}/#{serviceId}"
 
-	## Make sure we installed nginx
-	cookbook_file "/etc/yum.repos.d/nginx.repo" do
-		source "nginx.repo"
-		mode "0644"
-	end
-	package "nginx" do
-		action :install
-	end
+	frontFolderList = {
+		rootFolder => {
+			:owner => serviceUser,
+			:group => serviceUser,
+			:mode => 0750
+		},
+		"#{rootFolder}/docs" => {
+			:owner => serviceUser,
+			:group => serviceGroup,
+			:mode => 0750
+		},
+		"#{rootFolder}/conf" => {
+			:owner => serviceUser,
+			:group => serviceGroup,
+			:mode => 0750
+		},
+		"#{rootFolder}/conf/vhosts" => {
+			:owner => serviceUser,
+			:group => serviceGroup,
+			:mode => 0750
+		},
+		"#{rootFolder}/logs" => {
+			:owner => serviceUser,
+			:group => serviceUser,
+			:mode => 0750
+		},
+		"#{rootFolder}/tmp" => {
+			:owner => serviceUser,
+			:group => serviceGroup,
+			:mode => 0750
+		}
+	}
 
-	## First we have to create generic struct.
-	addGenericFrontService "Create_generic_front_service" do
-		client_id clientId
-		service_id serviceId
-		service_user serviceUser
-		service_group serviceGroup
-		root_folder rootFolder
-	end
-
-
-	## Then we have to call batchTemplateCreate in order to create Nginx service
 	nginxTemplateList = {
 		"#{rootFolder}/conf/nginx.conf" => {
 			:templateFile => "nginx.conf.erb",
 			:variables => {
 	    		'nginx_user' => serviceUser,
 	    		'nginx_group' => serviceGroup,
-	    		'has_upstreams' => false,
 	    		'service_root_folder' => rootFolder,
 	  		},
 	  		:owner => serviceUser,
 	  		:group => serviceUser,
-	  		:mode => 0644
-		},
-		"#{rootFolder}/conf/upstream.conf" => {
-			:templateFile => "upstream.conf.erb",
-			:variables => {
-	    		'upstream_list' => upstreamList
-	  		},
-	  		:owner => serviceUser,
-	  		:group => serviceGroup,
-	  		:mode => 0644
+	  		:mode => 0750
 		},
 		"#{rootFolder}/docs/index.html" => {
 			:templateFile => "index.html.erb",
@@ -66,30 +69,78 @@ define :addNginxService,:upstreamList => {} do
 	  		},
 	  		:owner => serviceUser,
 	  		:group => serviceGroup,
-	  		:mode => 0644
+	  		:mode => 0750
 		},
 		"#{rootFolder}/conf/vhosts/#{serviceId}.conf" => {
-			:templateFile => "servername.conf.erb",
+			:templateFile => "nginx-vhost.conf.erb",
 			:variables => {
-	    		'server_name' => serviceId,
-	    		'server_aliases' => "localhost #{node[:fqdn]}",
 	    		'service_root_folder' => rootFolder,
-	    		'ip' => '127.0.0.1',
 	    		'docroot' => "#{rootFolder}/docs",
-	    		'upstreams' => {},
-	    		# 	'mytomcat' => '/'
-	    		# }
-
+	    		'listen_port' => '80'
 	  		},
 	  		:owner => serviceUser,
 	  		:group => serviceGroup,
-	  		:mode => 0644
+	  		:mode => 0750
 		},
+		"/etc/init.d/nginx-#{serviceId}" => {
+			:templateFile => "nginx-init-script.erb",
+			:variables => {
+	    		'service_root_folder' => rootFolder,
+	    		'service_name' => serviceId,
+	    		'service_description' => "My custom Nginx front"
+	  		},
+	  		:owner => 'root',
+	  		:group => 'root',
+	  		:mode => 0755
+		}
 	}
 
+	nginxFileList = {
+		"#{rootFolder}/conf/mime.types" => {
+			:sourceFilePath => 'mime.types',
+			:owner => serviceUser,
+	  		:group => serviceGroup,
+	  		:mode => 0750
+		}
+	}
 
-	batchCreateTemplates "Create_nginx_template_files" do
+	## Reusable function  for flushin yum internal cache
+	ruby_block "reload-internal-yum-cache" do
+	  block do
+	    Chef::Provider::Package::Yum::YumCache.instance.reload
+	  end
+	  action :nothing
+	end
+	cookbook_file "/etc/yum.repos.d/nginx.repo" do
+		source 'nginx.repo'
+    	notifies :create, resources(:ruby_block => "reload-internal-yum-cache"), :immediately
+	end
+	package "nginx" do
+		action :install
+		version '1.2.4-1.el6.ngx'
+	end
+
+	## Laucnh creation of service
+	batchCreateFolders "create_nginx_service_dirs" do
+		foldersList frontFolderList
+	end
+
+	batchAddFiles "Add_nginx_files" do
+		fileList nginxFileList
+	end
+
+	batchProcessTemplates "Create_nginx_template_files" do
 		templateList nginxTemplateList
 	end
+
+	script "configure_service" do
+	  interpreter "bash"
+	  user "root"
+	  code <<-EOH
+	  chkconfig nginx off
+	  chkconfig nginx-#{serviceId} on
+	  EOH
+	end
+
 	
 end

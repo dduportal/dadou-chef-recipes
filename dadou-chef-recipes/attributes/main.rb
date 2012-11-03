@@ -9,5 +9,5 @@
 
 # Main Attributes
 set[:dadou][:yum][:custom_repo] = ['epel.repo']
-set[:dadou][:yum][:packages] = ['dash','MAKEDEV','dracut-kernel','tar','zip','mlocate','vim','wget','libxml2','vim-enhanced','bind-utils','sysstat','screen']
+set[:dadou][:yum][:packages] = ['dash','MAKEDEV','dracut-kernel','tar','zip','mlocate','vim','wget','libxml2','vim-enhanced','bind-utils','sysstat','screen','telnet','make','gcc','perl','kernel-devel']
 

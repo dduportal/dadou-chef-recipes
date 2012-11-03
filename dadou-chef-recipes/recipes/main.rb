@@ -22,6 +22,7 @@ node[:dadou][:yum][:packages].each do |pkgToInstall|
 end
 
 # Yum global update
+# Be carefull with vbox additions and updating kernel, use https://github.com/dotless-de/vagrant-vbguest
 execute "Yum_update" do
   command "sudo yum -y update"
   action :run
@@ -33,5 +34,4 @@ addNginxService "Create_nginx_front_service" do
   service_id "local"
   service_user "vagrant"
   service_group "vagrant"
-  # upstreamList { 'mytomcat' => ['127.0.0.1:8080'] }
 end
