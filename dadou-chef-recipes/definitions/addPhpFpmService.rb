@@ -1,22 +1,21 @@
 #
 # Cookbook Name:: dadou-chef-recipes
-# Definition:: addNginxService
+# Definition:: addPhpFpmService
 #
 # Copyright 2012 Damien DUPORTAL <damien.duportal@gmail.com>
 # https://github.com/dduportal/dadou-chef-recipes
 #
 
-
-define :addNginxService do
+define :addPhpFpmService do
 
 	clientId = params[:client_id]
 	serviceId = params[:service_id]
 	serviceUser = params[:service_user]
 	serviceGroup = params[:service_group]
 
-	rootFolder = "/srv/front/#{clientId}/#{serviceId}"
+	rootFolder = "/srv/middle/#{clientId}/#{serviceId}"
 
-	frontFolderList = {
+	middleFolderList = {
 		rootFolder => {
 			:owner => serviceUser,
 			:group => serviceUser,
@@ -32,7 +31,7 @@ define :addNginxService do
 			:group => serviceGroup,
 			:mode => 0750
 		},
-		"#{rootFolder}/conf/vhosts" => {
+		"#{rootFolder}/conf/conf.d" => {
 			:owner => serviceUser,
 			:group => serviceGroup,
 			:mode => 0750
@@ -49,44 +48,31 @@ define :addNginxService do
 		}
 	}
 
-	nginxTemplateList = {
-		"#{rootFolder}/conf/nginx.conf" => {
-			:templateFile => "nginx.conf.erb",
+	phpTemplateList = {
+		"#{rootFolder}/conf/php-fpm.conf" => {
+			:templateFile => "php-fpm.conf.erb",
 			:variables => {
-	    		'nginx_user' => serviceUser,
-	    		'nginx_group' => serviceGroup,
 	    		'service_root_folder' => rootFolder,
 	  		},
 	  		:owner => serviceUser,
 	  		:group => serviceUser,
 	  		:mode => 0750
 		},
-		"#{rootFolder}/docs/index.html" => {
-			:templateFile => "index.html.erb",
+		"#{rootFolder}/conf/conf.d/#{serviceId}-pool.conf" => {
+			:templateFile => "php-fpm-pool.conf.erb",
 			:variables => {
-	    		'service' => serviceId,
+	    		'service_root_folder' => rootFolder,
+	    		'service_name' => "#{serviceId}",
+	    		'service_listen_port' => '9000'
 	  		},
 	  		:owner => serviceUser,
 	  		:group => serviceGroup,
 	  		:mode => 0750
 		},
-		"#{rootFolder}/conf/vhosts/#{serviceId}.conf" => {
-			:templateFile => "nginx-vhost.conf.erb",
+		"/etc/init.d/php-fpm-#{serviceId}" => {
+			:templateFile => "php-fpm-init-script.erb",
 			:variables => {
 	    		'service_root_folder' => rootFolder,
-	    		'docroot' => "#{rootFolder}/docs",
-	    		'listen_port' => '80'
-	  		},
-	  		:owner => serviceUser,
-	  		:group => serviceGroup,
-	  		:mode => 0750
-		},
-		"/etc/init.d/nginx-#{serviceId}" => {
-			:templateFile => "nginx-init-script.erb",
-			:variables => {
-	    		'service_root_folder' => rootFolder,
-	    		'service_name' => serviceId,
-	    		'service_description' => "My custom Nginx front"
 	  		},
 	  		:owner => 'root',
 	  		:group => 'root',
@@ -94,9 +80,15 @@ define :addNginxService do
 		}
 	}
 
-	nginxFileList = {
-		"#{rootFolder}/conf/mime.types" => {
-			:sourceFilePath => 'mime.types',
+	phpFileList = {
+		"#{rootFolder}/conf/php.ini" => {
+			:sourceFilePath => 'php.ini',
+			:owner => serviceUser,
+	  		:group => serviceGroup,
+	  		:mode => 0750
+		},
+		"#{rootFolder}/docs/info.php" => {
+			:sourceFilePath => 'info.php',
 			:owner => serviceUser,
 	  		:group => serviceGroup,
 	  		:mode => 0750
@@ -110,37 +102,38 @@ define :addNginxService do
 	  end
 	  action :nothing
 	end
-	cookbook_file "/etc/yum.repos.d/nginx.repo" do
-		source 'nginx.repo'
+	cookbook_file "/etc/pki/rpm-gpg/RPM-GPG-KEY-remi" do
+		source 'RPM-GPG-KEY-remi'
 		mode 0644
     	notifies :create, resources(:ruby_block => "reload-internal-yum-cache"), :immediately
 	end
-	package "nginx" do
-		action :install
-		version '1.2.4-1.el6.ngx'
+	cookbook_file "/etc/yum.repos.d/remi.repo" do
+		source 'remi.repo'
+		mode 0644
+	end
+	["php-fpm","php","php-gd","php-curl"].each do |pkgToInstall|
+		package pkgToInstall do
+			action :install
+		end
+	end
+	batchCreateFolders "create_phpfpm_service_dirs" do
+		foldersList middleFolderList
 	end
 
-	## Laucnh creation of service
-	batchCreateFolders "create_nginx_service_dirs" do
-		foldersList frontFolderList
+	batchAddFiles "Add_phpfpm_files" do
+		fileList phpFileList
 	end
 
-	batchAddFiles "Add_nginx_files" do
-		fileList nginxFileList
-	end
-
-	batchProcessTemplates "Create_nginx_template_files" do
-		templateList nginxTemplateList
+	batchProcessTemplates "Create_phpfpm_template_files" do
+		templateList phpTemplateList
 	end
 
 	script "configure_service" do
 	  interpreter "bash"
 	  user "root"
 	  code <<-EOH
-	  chkconfig nginx off
-	  chkconfig nginx-#{serviceId} on
+	  chkconfig php-fpm off
+	  chkconfig php-fpm-#{serviceId} on
 	  EOH
 	end
-
-	
 end

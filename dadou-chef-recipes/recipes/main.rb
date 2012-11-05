@@ -35,3 +35,30 @@ addNginxService "Create_nginx_front_service" do
   service_user "vagrant"
   service_group "vagrant"
 end
+
+# Create middle service
+addPhpFpmService "Create_phpfpm_middle_service" do
+  client_id "dadou"
+  service_id "local"
+  service_user "vagrant"
+  service_group "vagrant"
+end
+
+# Add php location to the nginx front service
+execute "configure_service" do
+  user "vagrant"
+  command "sed -i 's/^}$/    include phplocation.conf;\\n}/g' /srv/front/dadou/local/conf/vhosts/local.conf"
+end
+template "/srv/front/dadou/local/conf/phplocation.conf" do
+  source "phplocation.conf.erb"
+  owner "vagrant"
+  group "vagrant"
+  mode 0750
+  variables({
+    "service_root" => "/srv/middle/dadou/local",
+    "service_listen_port" => 9000
+  })
+end
+cookbook_file "/srv/front/dadou/local/conf/fastcgi_params" do
+  source "fastcgi_params"
+end

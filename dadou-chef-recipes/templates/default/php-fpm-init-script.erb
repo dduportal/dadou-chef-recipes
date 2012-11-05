@@ -1,0 +1,93 @@
+#! /bin/sh
+#
+# chkconfig: - 84 16
+# description:	PHP FastCGI Process Manager
+# processname: php-fpm
+# config: <%= @service_root_folder %>/conf/php-fpm.conf
+# pidfile: <%= @service_root_folder %>/tmp/php-fpm.pid
+
+# Standard LSB functions
+#. /lib/lsb/init-functions
+
+# Source function library.
+. /etc/init.d/functions
+
+# Check that networking is up.
+. /etc/sysconfig/network
+
+# Additional environment file
+if [ -f /etc/sysconfig/php-fpm ]; then
+      . /etc/sysconfig/php-fpm
+fi
+
+if [ "$NETWORKING" = "no" ]
+then
+	exit 0
+fi
+
+RETVAL=0
+prog="php-fpm"
+prefix="<%= @service_root_folder %>"
+pidfile=${prefix}"/tmp/php-fpm.pid"
+lockfile=${prefix}"/tmp/php-fpm.lock"
+
+start () {
+	echo -n $"Starting $prog: "
+	dir=$(dirname ${pidfile})
+	[ -d $dir ] || mkdir $dir
+	daemon --pidfile ${pidfile} php-fpm -p <%= @service_root_folder %> -c <%= @service_root_folder %>/conf/php.ini -y <%= @service_root_folder %>/conf/php-fpm.conf 
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch ${lockfile}
+}
+stop () {
+	echo -n $"Stopping $prog: "
+	killproc -p ${pidfile} php-fpm
+	RETVAL=$?
+	echo
+	if [ $RETVAL -eq 0 ] ; then
+		rm -f ${lockfile} ${pidfile}
+	fi
+}
+
+restart () {
+        stop
+        start
+}
+
+reload () {
+	echo -n $"Reloading $prog: "
+	killproc -p ${pidfile} php-fpm -USR2 -p <%= @service_root_folder %> -c <%= @service_root_folder %>/conf/php.ini -y <%= @service_root_folder %>/conf/php-fpm.conf 
+	RETVAL=$?
+	echo
+}
+
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+	status -p ${pidfile} php-fpm
+	RETVAL=$?
+	;;
+  restart)
+	restart
+	;;
+  reload|force-reload)
+	reload
+	;;
+  condrestart|try-restart)
+	[ -f ${lockfile} ] && restart || :
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart|try-restart}"
+	RETVAL=2
+        ;;
+esac
+
+exit $RETVAL
