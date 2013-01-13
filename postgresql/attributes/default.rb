@@ -15,8 +15,9 @@ node.set['postgresql'] = {
 	},
 	'server' => {
 		'config' => {
+			'listen_addresses' => 'localhost',
 			'max_connections' => 100,
-			'max_connections' => '32MB',
+			'shared_buffers' => '32MB',
 			'log_destination' => 'stderr',
 			'logging_collector' => true,
 			'log_directory' => 'pg_log',
@@ -31,6 +32,13 @@ node.set['postgresql'] = {
 			'lc_numeric' => 'C',
 			'lc_time' => 'C',
 			'default_text_search_config' => 'pg_catalog.english',
-		}
+		},
+		'pg_hba' => [
+		  {:type => 'local', :db => 'all', :user => 'postgres', :addr => nil, :method => 'ident'},
+		  {:type => 'local', :db => 'all', :user => 'all', :addr => nil, :method => 'ident'},
+		  {:type => 'host', :db => 'all', :user => 'all', :addr => '127.0.0.1/32', :method => 'md5'},
+		  {:type => 'host', :db => 'all', :user => 'all', :addr => '::1/128', :method => 'md5'},
+		  {:type => 'host', :db => 'all', :user => 'all', :addr => '10.0.2.2/16', :method => 'md5' }
+		]
 	}
 }

@@ -54,7 +54,7 @@ action :create do
 			:pg_data => pg_data_dir,
 			:pg_log_file => new_resource.custom_log_file,
 			:pg_root => pg_root,
-			:pg_lock_file => new_resource.custom_lockfile_dir
+			:pg_lock_file => new_resource.custom_lockfile_dir.chomp('/') + pg_name
 		)
 	end
 

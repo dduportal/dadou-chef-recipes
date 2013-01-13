@@ -36,8 +36,17 @@ if platform?("centos", "redhat", "fedora")
 	end
 end
 
+pg_data_dir = "/var/lib/pgsql/9.2/data"
 
 # Configure the default server
 postgresql_service "postgresql-9.2" do
-	action :delete
+	action :create
+	custom_data_dir pg_data_dir
 end
+
+#postgresql_conf "postgresql-9.2" do
+#	action :apply
+#	service_dir pg_data_dir
+#	config node['postgresql']['server']['config']
+#	hba_config node['postgresql']['server']['pg_hba']
+#end
