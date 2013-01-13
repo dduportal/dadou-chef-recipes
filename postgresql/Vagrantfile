@@ -1,0 +1,27 @@
+Vagrant::Config.run do |config|
+
+  config.vm.box = "centos-6-x64-base"
+
+  # Forward SSH
+  config.vm.forward_port 22, 5022
+
+  # PgSQL
+  config.vm.forward_port 5432, 5432
+
+  # set auto_update to false, if do NOT want to check the correct additions 
+  # version when booting this machine
+  config.vbguest.auto_update = true
+
+  # do NOT download the iso file from a webserver
+  config.vbguest.no_remote = true
+
+  # Chef recipes running
+  config.vm.provision :chef_solo do |chef|
+    # Chef config
+    chef.cookbooks_path = ['../']
+
+    # Running recipes
+    chef.add_recipe("postgresql::server")
+    chef.add_recipe("postgresql::postgis")
+  end
+end
