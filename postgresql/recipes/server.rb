@@ -8,6 +8,8 @@
 # This recipe will install the pgsql servers packages provided from default.rb attributes
 #
 
+include_recipe "postgresql"
+
 # Install complementals packages
 if node.attribute?('postgresql') and node['postgresql'].attribute?('server') and node['postgresql']['server'].attribute?('packages') 
 	node['postgresql']['server']['packages'].each do |pg_pkg|
@@ -32,4 +34,10 @@ if platform?("centos", "redhat", "fedora")
 			end
 		end
 	end
+end
+
+
+# Configure the default server
+postgresql_service "postgresql-9.2" do
+	action :delete
 end

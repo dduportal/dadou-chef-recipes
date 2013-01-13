@@ -8,4 +8,4 @@
 
 
 # PostGis Attributes
-default['dadou']['postgis']['version']['major'] = "2"
+default['postgresql']['postgis']['version'] = "2"

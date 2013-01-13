@@ -41,7 +41,7 @@ if platform?("centos", "redhat", "fedora")
 	# Downloading the rpm
 	remote_file rpm_path do
 		source rpm_url
-		not_if "rpm -qa | egrep -qx '#{rpm_name}'"
+		not_if "rpm -qa | grep -q '#{rpm_name}'"
   		notifies :install, "rpm_package[pgdg]", :immediately
 	end
 
