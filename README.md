@@ -14,17 +14,19 @@ Just point out the cookbook folder from your VagrantFile :
 
 ````ruby
   chef.cookbooks_path = ['/path/to/your/cookbook','/path/to/this/fetched/git/repo/cookbook']
+````
 
 or use tarball version within your Vagrantfile in order to direct download cookbook fixed version :
 
 ````ruby
   chef.recipe_url = "https://github.com/dduportal/dadou-chef-recipes/archive/<YOUR VERSION>.tar.gz"
+````
 
 and there you go :
 
 ````ruby
   chef.add_recipe("somecookbook::somerecipe")
-
+````
 
 # Todo
 
