@@ -8,7 +8,12 @@
 # This recipe will install the pgsql servers packages provided from default.rb attributes
 #
 
-include_recipe "postgresql"
+include_recipe "postgresql::default"
+
+pgsql_major_version = node['postgresql']['version']['major']
+pgsql_minor_version = node['postgresql']['version']['minor']
+pgsql_short_version = pgsql_major_version + pgsql_minor_version
+pgsql_version = pgsql_major_version + "." + pgsql_minor_version
 
 # Install complementals packages
 if node.attribute?('postgresql') and node['postgresql'].attribute?('server') and node['postgresql']['server'].attribute?('packages') 
@@ -36,17 +41,14 @@ if platform?("centos", "redhat", "fedora")
 	end
 end
 
-pg_data_dir = "/var/lib/pgsql/9.2/data"
+pg_data_dir = "/var/lib/pgsql/#{pgsql_version}/data"
 
 # Configure the default server
-postgresql_service "postgresql-9.2" do
+postgresql_service "postgresql-#{pgsql_version}" do
 	action :create
 	custom_data_dir pg_data_dir
+	custom_log_file "/var/lib/pgsql/#{pgsql_version}/pgstartup.log"
+	custom_pid_file "/var/run/postmaster-#{pgsql_version}.pid"
+	custom_lockfile_dir "/var/lock/subsys"
+	pg_version "#{pgsql_version}"
 end
-
-#postgresql_conf "postgresql-9.2" do
-#	action :apply
-#	service_dir pg_data_dir
-#	config node['postgresql']['server']['config']
-#	hba_config node['postgresql']['server']['pg_hba']
-#end
