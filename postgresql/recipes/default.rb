@@ -33,15 +33,12 @@ if platform?("centos", "redhat", "fedora")
 	end
 	
 	rpm_name = "pgdg-#{distrib_name}#{pgsql_short_version}-#{pgsql_version}-#{node['postgresql']['version']['rpm']}.noarch"
-	rpm_url = "#{repo_base_url}/#{pgsql_version}/#{distrib_id}-#{distrib_version}-#{arch}/#{rpm_name}.rpm"
 	rpm_path = "/tmp/#{rpm_name}.rpm"
-
-	log "As RHEL Linux, i'm going to use this rpm : #{rpm_url}"
 
 	# Downloading the rpm
 	remote_file rpm_path do
-		source rpm_url
-		not_if "rpm -qa | grep -q '#{rpm_name}'"
+		source node['postgresql']['version']['repo_rpm']
+		not_if "rpm -qa | grep -q  'pgdg' | grep -q '#{pgsql_version}'"
   		notifies :install, "rpm_package[pgdg]", :immediately
 	end
 
