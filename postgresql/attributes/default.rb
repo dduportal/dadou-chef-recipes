@@ -7,7 +7,7 @@
 #
 
 # PostgreSQL Attributes
-node.set['postgresql'] = {
+node.default['postgresql'] = {
 	'version' => {
 		'major' => '8',
 		'minor' => '4',

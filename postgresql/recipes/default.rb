@@ -35,7 +35,8 @@ if platform?("centos", "redhat", "fedora")
 	rpm_name = "pgdg-#{distrib_name}#{pgsql_short_version}-#{pgsql_version}-#{node['postgresql']['version']['rpm']}.noarch"
 	rpm_path = "/tmp/#{rpm_name}.rpm"
 
-	# Downloading the rpm
+	# Downloading the rpm from provided url
+	# See http://yum.postgresql.org/repopackages.php
 	remote_file rpm_path do
 		source node['postgresql']['version']['repo_rpm']
 		not_if "rpm -qa | grep -q  'pgdg' | grep -q '#{pgsql_version}'"

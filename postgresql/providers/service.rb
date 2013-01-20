@@ -18,6 +18,15 @@ action :create do
 	pg_group = new_resource.group
 	pg_bin_dir = new_resource.pg_bin_dir.chomp('/')
 	pg_data_dir = new_resource.custom_data_dir.chomp('/')
+	pg_version = new_resource.pg_version
+	pgsql_major_version = pg_version.split('.')[0]
+	pgsql_minor_version = pg_version.split('.')[1]
+
+	if pgsql_minor_version == 0 then
+		pg_prev_major_version = ((pgsql_major_version.to_i) - 1).to_s + ".0"
+	else
+		pg_prev_major_version = pgsql_major_version + "." + ((pgsql_minor_version.to_i) - 1).to_s
+	end
 
 	log "Creating postgresql service #{pg_name}"
 
@@ -48,7 +57,7 @@ action :create do
 			:pg_group => pg_group,
 			:pg_pid_file => new_resource.custom_pid_file,
 			:pg_version => new_resource.pg_version,
-			:pg_prev_major_version => new_resource.pg_prev_major_version,
+			:pg_prev_major_version => pg_prev_major_version,
 			:pg_bin_dir => pg_bin_dir,
 			:pg_port => new_resource.port,
 			:pg_data => pg_data_dir,
@@ -69,14 +78,6 @@ action :create do
 		user pg_user
 		cwd pg_root
 		creates pg_data_dir + "/PG_VERSION"
-	end
-
-	# Configure our service
-	postgresql_conf pg_name do
-		action :apply
-		service_dir pg_data_dir
-		config node['postgresql']['server']['config']
-		hba_config node['postgresql']['server']['pg_hba']
 	end
 
 	# Start our service and enable it at boot

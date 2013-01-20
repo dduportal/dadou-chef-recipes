@@ -42,13 +42,23 @@ if platform?("centos", "redhat", "fedora")
 end
 
 pg_data_dir = "/var/lib/pgsql/#{pgsql_version}/data"
+pg_srv_name = "postgresql-#{pgsql_version}"
 
-# Configure the default server
-postgresql_service "postgresql-#{pgsql_version}" do
+# Create the default service
+postgresql_service pg_srv_name do
 	action :create
 	custom_data_dir pg_data_dir
+	pg_bin_dir "/usr/pgsql-#{pgsql_version}/bin"
 	custom_log_file "/var/lib/pgsql/#{pgsql_version}/pgstartup.log"
 	custom_pid_file "/var/run/postmaster-#{pgsql_version}.pid"
 	custom_lockfile_dir "/var/lock/subsys"
 	pg_version "#{pgsql_version}"
+end
+
+# Configure our default service
+postgresql_conf pg_srv_name do
+	action :apply
+	service_dir pg_data_dir
+	config node['postgresql']['server']['config']
+	hba_config node['postgresql']['server']['pg_hba']
 end
