@@ -58,6 +58,4 @@ Some things i'm working on :
  * Adding my beginner's cookbook for nginx
  * Adding sandbox-cookbook for playing around
 
-
-
-[Official Opscode yum recipe]: https://github.com/opscode-cookbooks/yum
+[Official Opscode yum cookbook]: https://github.com/opscode-cookbooks/yum
