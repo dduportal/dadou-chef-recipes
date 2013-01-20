@@ -72,6 +72,12 @@ action :create do
 	end
 
 	# Configure our service
+	postgresql_conf pg_name do
+		action :apply
+		service_dir pg_data_dir
+		config node['postgresql']['server']['config']
+		hba_config node['postgresql']['server']['pg_hba']
+	end
 
 	# Start our service and enable it at boot
 	service pg_name do
