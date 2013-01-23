@@ -18,27 +18,29 @@ Attributes are set from a big JSON hash with these typology :
 ````ruby
 default['postgresql']['version']
 `````
-Containing versions and yum repo source
-  > 'major' : default is '8'
-  > 'minor' : default is '4'
-  > 'repo_rpm' : Extracted from officials postgresql yum repos from http://yum.postgresql.org/repopackages.php. Default to http://yum.postgresql.org/8.4/redhat/rhel-6-x86_64/pgdg-centos-8.4-3.noarch.rpm
+Containing versions and yum repo source as it :
+* 'major' : Major version of PostgreSQL. Default is '8'
+* 'minor' : Minor version of PostgreSQL. Default is '4'
+* 'repo_rpm' : URL of the yum repo rpm, extracted from officials postgresql yum repos from http://yum.postgresql.org/repopackages.php. Default to http://yum.postgresql.org/8.4/redhat/rhel-6-x86_64/pgdg-centos-8.4-3.noarch.rpm
 
 ## server.rb
 
  ````ruby
  default['postgresql']['server']['config']
  ````
- hash of postgresql.conf directives. See attributes/default.rb for default attributes.
+ Hash of postgresql.conf directives. See attributes/server.rb for default attributes.
  
  ````ruby
  default['postgresql']['server']['pg_hba']
  ````
- Array of pg_hba entries. See attributes/default.rb for default attributes.
+ Array of pg_hba entries. See attributes/server.rb for default attributes.
 
 ## postgis.rb
 
-Attribute for the postgis recipe :
- * default['postgresql']['postgis']['version'] : Actually, this is the "short postgis rpm version". Default : 2 (example : postgresql92-postgis2, postgresql91-postgis15 ...)
+````ruby
+default['postgresql']['postgis']['version']
+`````
+Actually, this is the "short postgis rpm version". Default : 2 (example : postgresql92-postgis2, postgresql91-postgis15 ...)
 
 # Recipes
 
@@ -51,18 +53,35 @@ Attribute for the postgis recipe :
 
 We implements to LightWeight Resources Providers in order to ease postgresql services use :
   
-  * service : this LRWP will create a postgresql service, enable it by default and launch it.
-   > Parameters (See providers/service.rb to see all default valuers/declarations) :
+## postgresql_service
+
+this LRWP will manage a postgresql service
+
+### Parameters (See providers/service.rb to see all default valuers/declarations) :
+
 ````ruby
 # Some example call
+pgsql_version = "9.2"
 postgresql_service "my_pg_server" do
 	action :create
-	root_dir "/srv/pgsql/"
-	custom_data_dir "/srv/pgsql/my_pg_server"
-	pg_bin_dir "/usr/pgsql-#{pgsql_version}/bin"
-	custom_log_file "/var/lib/pgsql/#{pgsql_version}/pgstartup.log"
+	root_dir "/srv/pgsql/" # Root dir of service, containing pgstartup.log, home of service's owner
+	pg_data_dir "/srv/pgsql/my_pg_server" # If not in #{root_dir}/data
+	user "postgres" # Owner of service
+	group "postgres" # Group owner of service
+	pg_bin_dir "/usr/pgsql-#{pgsql_version}/bin" # where are your psql, etc. binaries ?
+	custom_port 5432 # Port where service is listening
+	custom_log_file "/var/lib/pgsql/#{pgsql_version}/pgstartup.log" # pgstartup.log if not in #{root_dir}
 	custom_pid_file "/var/run/postmaster-#{pgsql_version}.pid"
 	custom_lockfile_dir "/var/lock/subsys"
 	pg_version "#{pgsql_version}"
 end
 ````
+### Actions :
+  * :create : will create the service, configure it from node's attributes, enable it and launch it.
+  * :delete : Stop, disable, and erase service. Will delete all log/lock/pid/data files/dir.
+  * :start : launch the service
+  * :stop : shut down properly the service
+  * :reload : reload on-the-fly postgresql and it's configuration, without throwing away connections.
+  * :restart : completeley restart the service.
+  * :enable : add the service to the boot launch items.
+  * :disable : remove the service from the boot launch items.
