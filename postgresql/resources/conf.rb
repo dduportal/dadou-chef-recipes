@@ -10,6 +10,7 @@
 #
 
 actions :apply
+default_action :apply
 
 attribute :service_name, :kind_of => String, :name_attribute => true
 attribute :service_dir, :kind_of => String, :default => "/var/lib/pgsql/9.2/data"

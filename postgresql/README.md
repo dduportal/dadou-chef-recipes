@@ -57,7 +57,8 @@ We implements to LightWeight Resources Providers in order to ease postgresql ser
 
 this LRWP will manage a postgresql service
 
-### Parameters (See providers/service.rb to see all default valuers/declarations) :
+### Parameters
+(See providers/service.rb to see all default valuers/declarations) :
 
 ````ruby
 # Some example call
@@ -85,3 +86,22 @@ end
   * :restart : completeley restart the service.
   * :enable : add the service to the boot launch items.
   * :disable : remove the service from the boot launch items.
+
+## postgresql_conf
+
+this LRWP will configure a postgresql service from node's attributes
+
+### Parameters
+(See providers/conf.rb to see all default valuers/declarations) :
+
+````ruby
+# Some example call
+pgsql_conf = "9.2"
+postgresql_conf "my_pg_server" do
+	service_dir "/var/lib/pgsql/9.2/data" # Where is your service data dir ?
+	config { 'Some' => 'Hash'} # Key/Value hash containing postgresql directives
+	hba_config [Array,Of,hba] # Array containing all entries (hash) for pg_hba.
+end
+````
+### Actions :
+  * :apply : Unique and default action. Apply conf and reload (or restart) the service
