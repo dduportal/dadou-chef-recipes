@@ -10,22 +10,35 @@ Recipe tested with :
 
 # Attributes
 
-We have these files represnting atomic default attributes :
+We have these files representing atomic default attributes :
 
 ## default.rb
 
 Attributes are set from a big JSON hash with these typology :
- * node['postgresql']['version'] : Containing versions and yum repo source
+````ruby
+default['postgresql']['version']
+`````
+Containing versions and yum repo source
   > 'major' : default is '8'
   > 'minor' : default is '4'
   > 'repo_rpm' : Extracted from officials postgresql yum repos from http://yum.postgresql.org/repopackages.php. Default to http://yum.postgresql.org/8.4/redhat/rhel-6-x86_64/pgdg-centos-8.4-3.noarch.rpm
- * node['postgresql']['server']['config'] : hash of postgresql.conf directives. See attributes/default.rb for default attributes.
- * node['postgresql']['server']['pg_hba'] : Array of pg_hba entries. See attributes/default.rb for default attributes.
+
+## server.rb
+
+ ````ruby
+ default['postgresql']['server']['config']
+ ````
+ hash of postgresql.conf directives. See attributes/default.rb for default attributes.
+ 
+ ````ruby
+ default['postgresql']['server']['pg_hba']
+ ````
+ Array of pg_hba entries. See attributes/default.rb for default attributes.
 
 ## postgis.rb
 
 Attribute for the postgis recipe :
- * node['postgresql']['postgis']['version'] : Actually, this is the "short postgis rpm version". Default : 2 (example : postgresql92-postgis2, postgresql91-postgis15 ...)
+ * default['postgresql']['postgis']['version'] : Actually, this is the "short postgis rpm version". Default : 2 (example : postgresql92-postgis2, postgresql91-postgis15 ...)
 
 # Recipes
 
