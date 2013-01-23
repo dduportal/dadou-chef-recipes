@@ -69,7 +69,7 @@ PGPORT=<%= @pg_port %>
 PGDATA=<%= @pg_data %>
 PGLOG=<%= @pg_log_file %>
 # Log file for pg_upgrade
-PGUPLOG=<%= @pg_root %>/$PGMAJORVERSION/pgupgrade.log
+PGUPLOG=<%= @pg_root %>/pgupgrade.log
 
 # Override defaults from /etc/sysconfig/pgsql if file is present
 [ -f /etc/sysconfig/pgsql/${NAME} ] && . /etc/sysconfig/pgsql/${NAME}

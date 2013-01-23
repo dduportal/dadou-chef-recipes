@@ -8,6 +8,8 @@
 # This recipe will install the pgsql servers packages provided from default.rb attributes
 #
 
+include_recipe "postgresql::default"
+
 # Install complementals packages
 if node.attribute?('postgresql') and node['postgresql'].attribute?('client') and node['postgresql']['client'].attribute?('packages') 
 	node['postgresql']['client']['packages'].each do |pg_pkg|

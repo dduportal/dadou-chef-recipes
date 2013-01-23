@@ -8,12 +8,12 @@
 # This recipe will configure your system to use the official postgresql repositories
 #
 
+log node['postgresql'].to_s
+
 pgsql_major_version = node['postgresql']['version']['major']
 pgsql_minor_version = node['postgresql']['version']['minor']
 pgsql_short_version = pgsql_major_version + pgsql_minor_version
 pgsql_version = pgsql_major_version + "." + pgsql_minor_version
-
-log "I'm going to install postgresql server, version #{pgsql_version}.x"
 
 if platform?("centos", "redhat", "fedora")
 

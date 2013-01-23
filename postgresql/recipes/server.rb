@@ -47,11 +47,15 @@ pg_srv_name = "postgresql-#{pgsql_version}"
 # Create the default service
 postgresql_service pg_srv_name do
 	action :create
-	custom_data_dir pg_data_dir
+	root_dir "/var/lib/pgsql/#{pgsql_version}"
+	pg_data_dir pg_data_dir
+	user "postgres"
+	group "postgres"
 	pg_bin_dir "/usr/pgsql-#{pgsql_version}/bin"
+	custom_port 5432
 	custom_log_file "/var/lib/pgsql/#{pgsql_version}/pgstartup.log"
 	custom_pid_file "/var/run/postmaster-#{pgsql_version}.pid"
-	custom_lockfile_dir "/var/lock/subsys"
+	custom_lockfile "/var/lock/subsys"
 	pg_version "#{pgsql_version}"
 end
 
