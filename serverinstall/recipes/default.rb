@@ -15,6 +15,6 @@ end
 
 ## Activate sysstats
 execute "activate-systat" do
-	command "sed 's/ENABLED=\"false\"/ENABLED=\"true\"/g' /etc/default/sysstat"
+	command "sed -i 's/ENABLED=\"false\"/ENABLED=\"true\"/g' /etc/default/sysstat"
 end
 
