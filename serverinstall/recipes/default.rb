@@ -17,4 +17,7 @@ end
 execute "activate-systat" do
 	command "sed -i 's/ENABLED=\"false\"/ENABLED=\"true\"/g' /etc/default/sysstat"
 end
+service "sysstat" do
+	action :restart
+end
 
