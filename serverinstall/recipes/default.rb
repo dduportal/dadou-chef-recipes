@@ -1,13 +1,24 @@
+#
+# Cookbook Name:: serverinstall
+# Recipes:: default
+#
+# Copyright 2013, Damien DUPORTAL
+#
+#
 
 
+## Installing our aliases
+node['serverinstall']['profiles'].each do | profileScript |
+	cookbook_file "/etc/profile.d/#{profileScript}" do
+		source "#{profileScript}.erb"
+	end
+end
+
+## Install all C/Ruby compilation tools needed
 include_recipe "build-essential"
-include_recipe "apt"
 
-## Install our packages
-
-packagesToInstall = ["git","vim","curl","aptitude","ruby","rubygems","sysstat"]
-
-packagesToInstall.each do | pkg |
+# Install our packages
+node['serverinstall']['packages'].each do | pkg |
 	package "#{pkg}" do
 		action :install
 	end
