@@ -21,3 +21,6 @@ service "sysstat" do
 	action :restart
 end
 
+## Installing Virtualbox
+include_recipe "virtualbox"
+
