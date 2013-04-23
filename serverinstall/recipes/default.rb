@@ -35,3 +35,6 @@ end
 ## Installing Virtualbox
 include_recipe "virtualbox"
 
+## And then vagrant
+include_recipe "vagrant"
+
