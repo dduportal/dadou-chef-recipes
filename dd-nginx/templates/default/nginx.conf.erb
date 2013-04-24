@@ -1,4 +1,4 @@
 
 <% @nginx_conf.each do |directive, value| %>
-<% directive %> <% if value.kind_of?(Array) %><%= value.join(" ") %><% else %><% value %><% end %>
+<% directive %> <% if value.kind_of?(Array) %><%= value.join(" ") %><% else %><%= value %><% end %>;
 <% end %>
