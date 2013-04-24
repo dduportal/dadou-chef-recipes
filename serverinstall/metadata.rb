@@ -1,4 +1,4 @@
 
-depends "build-essential"
-depends "apt"
-depends "vagrant"
+depends "build-essential" # opscode
+depends "apt" # opscode
+depends "vagrant" # opscode
