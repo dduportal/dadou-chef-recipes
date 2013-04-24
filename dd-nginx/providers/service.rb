@@ -72,9 +72,9 @@ action :create do
 		'user' => 'www',
 		'worker_processes' => 1,
 		'error_log' => ["#{logs_dir}/error.log","warn"],
-		'pid' => "#{nginx_pid_file}"
+		'pid' => "#{nginx_pid_file}",
 		'events' => {
-			'worker_connections' => 1024
+			'worker_connections' => 1024,
 		},
 		'http' => {
 			'default_type' => 'application/octet-stream',
