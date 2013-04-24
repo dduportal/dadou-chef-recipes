@@ -5,5 +5,5 @@
         %><%= value.join(" ") %><% 
     else %><%= value %><% end %>;<% 
     end %>
-}<% else %><%= value.join(" ") %><% else %><%= value %><% end %>;
+}<% elsif value.kind_of?(Array) %><%= value.join(" ") %><% else %><%= value %><% end %>;
 <% end %>
