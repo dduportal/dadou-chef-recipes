@@ -1,12 +1,7 @@
 #
-# Cookbook Name:: nginx
-# Resource:: service
-#
-# Copyright 2013, Damien DUPORTAL
-#
-#
+# Create /srv/:client_id/:server_id
 
-actions :create, :delete
+actions :create, :delete, :start, :restart, :reload, :stop, :status
 
 default_action :create
 

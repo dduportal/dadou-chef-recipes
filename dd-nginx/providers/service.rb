@@ -1,4 +1,9 @@
 #
+# Cookbook Name:: nginx
+# Provider:: service
+#
+# Copyright 2013, Damien DUPORTAL
+#
 #
 
 action :create do
@@ -64,7 +69,7 @@ action :create do
 
   	## Add config here !
 
-	template "/etc/init.d/#{new_resource.service_id}-nginx" do
+	template "/etc/init.d/nginx-#{new_resource.service_id}" do
   		source "init-script-nginx.erb"
   		cookbook new_resource.cookbook
 		owner 'root'
@@ -78,4 +83,43 @@ action :create do
     		'service_name' => new_resource.service_id,
   		})
   	end
+
+  	dd_nginx_service "#{new_resource.service_id}" do
+  		action :start
+  	end
 end
+
+action :delete do
+
+end
+
+action :start do
+	service "#{new_resource.service_id}" do
+		action :start
+	end
+end
+
+action :stop do
+	service "#{new_resource.service_id}" do
+		action :stop
+	end
+end
+
+action :restart do
+	service "#{new_resource.service_id}" do
+		action :restart
+	end
+end
+
+action :reload do
+	service "#{new_resource.service_id}" do
+		action :reload
+	end
+end
+
+action :status do
+	service "#{new_resource.service_id}" do
+		action :status
+	end
+end
+
