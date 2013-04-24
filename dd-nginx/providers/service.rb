@@ -72,6 +72,9 @@ action :create do
 		'user' => 'www',
 		'worker_processes' => 1,
 		'error_log' => ["#{logs_dir}/error.log","warn"],
+		'events' => {
+			'worker_connections' => 1024
+		}
 	}
   	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
   		nginx_conf nginx_conf_hash
