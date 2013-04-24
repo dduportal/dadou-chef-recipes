@@ -68,12 +68,13 @@ action :create do
   	end
 
   	## Configuration of default nginx
+  	nginx_conf_hash = {
+		'user' = 'www',
+		'worker_processes' = 1,
+		'error_log' = ["#{logs_dir}/error.log","warn"],
+	}
   	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
-  		nginx_conf {
-  			'user' => 'www',
-  			'worker_processes' => 1,
-  			'error_log' => ["#{logs_dir}/error.log","warn"],
-  		}
+  		nginx_conf nginx_conf_hash
   	end
 
 	template "/etc/init.d/nginx-#{new_resource.service_id}" do
