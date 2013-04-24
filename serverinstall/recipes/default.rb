@@ -38,6 +38,18 @@ include_recipe "virtualbox"
 ## And then vagrant
 include_recipe "vagrant"
 
-## Install Nginx for reverse proxy
+## Creating our system users
+node.default['serverinstall']['system_users'].each do | system_user |
+	user "#{system_user}" do
+		action :create
+		system true
+	end
+end
+
+## Install Nginx for reverse proxy and creating service
 include_recipe "dd-nginx"
+
+dd_nginx_service "reverseproxy" do
+	action :create
+end
 
