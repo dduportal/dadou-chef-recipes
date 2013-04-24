@@ -14,9 +14,7 @@ action :configure do
 		nginx_group = "www"
 	end
 
-	nginxRootConf = "#{new_resource.prefix_folder}/#{clientId}/#{serviceId}/conf"
-
-	Chef::Log.info("Generating nginx.conf file in #{nginxRootConf}")
+	Chef::Log.info("Generating nginx.conf file in #{new_resource.nginx_conf_file}")
 
 	# Setting nginx root
 	template "#{new_resource.nginx_conf_file}" do
