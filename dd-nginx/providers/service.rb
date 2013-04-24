@@ -9,7 +9,6 @@ action :create do
 	logs_dir = "#{service_root_folder}/logs"
 	docroot_dir = "#{service_root_folder}/docs"
 	tmp_dir = "#{service_root_folder}/tmp"
-	nginx_bin = new_resource.nginx_bin
 	nginx_pid_file = "#{tmp_dir}/nginx.pid"
 	
 	directory service_root_folder do
@@ -75,8 +74,8 @@ action :create do
     		'nginx_root_dir' => service_root_folder,
     		'nginx_conf_dir' => conf_dir,
     		'nginx_tmp_dir' => tmp_dir,
-    		'nginx_bin' => nginx_bin,
-    		'service_name' => service_id,
+    		'nginx_bin' => new_resource.nginx_bin,
+    		'service_name' => new_resource.service_id,
   		})
   	end
 end
