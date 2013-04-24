@@ -77,7 +77,7 @@ action :create do
   		nginx_conf nginx_conf_hash
   	end
 
-	template "/etc/init.d/nginx-#{new_resource.service_id}" do
+	template "/etc/init.d/#{new_resource.service_id}" do
   		source "init-script-nginx.erb"
   		cookbook new_resource.cookbook
 		owner 'root'
