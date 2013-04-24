@@ -72,8 +72,17 @@ action :create do
 		'user' => 'www',
 		'worker_processes' => 1,
 		'error_log' => ["#{logs_dir}/error.log","warn"],
+		'pid' => "#{nginx_pid_file}"
 		'events' => {
 			'worker_connections' => 1024
+		},
+		'http' => {
+			'default_type' => 'application/octet-stream',
+			'log_format' => ["main","'$remote_addr - $remote_user [$time_local] \"$request\" '","'$status $body_bytes_sent \"$http_referer\" '","'\"$http_user_agent\" \"$http_x_forwarded_for\"'"],
+			'access_log' => ["#{logs_dir}/access.log","main"],
+			'send_file' => "on",
+			'keepalive_timeout' => "on",
+			'include' => "#{conf_dir}/vhosts/*.conf",
 		}
 	}
   	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
