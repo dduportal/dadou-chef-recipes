@@ -8,4 +8,5 @@ version          '0.1.0'
 depends "build-essential" # opscode
 depends "apt" # opscode
 depends "vagrant" # opscode
+depends "yum" # opscode
 depends "dd-nginx"
