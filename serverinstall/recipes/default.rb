@@ -38,3 +38,6 @@ include_recipe "virtualbox"
 ## And then vagrant
 include_recipe "vagrant"
 
+## Install Nginx for reverse proxy
+include_recipe "dd-nginx"
+
