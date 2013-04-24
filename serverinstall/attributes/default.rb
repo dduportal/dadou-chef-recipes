@@ -11,4 +11,4 @@ node.default['serverinstall']['profiles'] = ["alias-profile.sh","color-profile.s
 node.set['virtualbox']['version'] = 4.2
 node.set['vagrant']['url'] = "http://files.vagrantup.com/packages/7e400d00a3c5a0fdf2809c8b5001a035415a607b/vagrant_1.2.2_x86_64.deb"
 node.set['vagrant']['checksum'] = "061ea2fcc5a25c037acd07bf606b0ed0"
-node.set['vagrant']['plugins'] = ["vagrant-plugins","vagrant-vbguest"]
+node.set['vagrant']['plugins'] = ["vagrant-vbguest"]
