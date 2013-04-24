@@ -1,0 +1,38 @@
+
+user <%= @nginx_conf['user'] %> <% if @nginx_conf['group'] %><%= @nginx_conf['group'] %><% end %>;
+worker_processes <%= @nginx_conf['worker_processes'] %>;
+
+error_log <%= @nginx_conf['error_log'].join(" ") %>;
+
+<% if @nginx_conf['core_directives']
+    %><% @nginx_conf['core_directives'].each do |directive, value|
+        %><%= directive %> <%= value %>;<%
+    end 
+end %>
+
+<% if @nginx_conf['events_directives'] %>
+events {
+        <% @nginx_conf['events_directives'].each do |directive, value| 
+            %><%= directive %> <%= value %>;<%
+        end %>
+}
+<% end %>
+
+<%if @nginx_conf['http']  %>
+http {
+    <% if @nginx_conf['http']['log_format']%>log_format <%= @nginx_conf['http']['log_format'].join(" ") %>;<% end %>
+
+    <% if @nginx_conf['http']['access_log']%>access_log <%= @nginx_conf['http']['access_log'].join(" ") %>;<% end %>
+
+<% @nginx_conf['http']['directives'].each do |directive, value| %>
+    <%= directive %> <% if value.kind_of?(Array) 
+        %><%= value.join(" ") %><% 
+    else %><%= value %><%
+    end %>;
+<% end %>
+
+<% @nginx_conf['http']['includes'].each do |includePattern| %>
+    include <%= includePattern %>;
+<% end %>
+}
+<% end %>

@@ -67,7 +67,14 @@ action :create do
   		})
   	end
 
-  	## Add config here !
+  	## Configuration of default nginx
+  	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
+  		nginx_conf {
+  			'user' => 'www',
+  			'worker_processes' => 1,
+  			'error_log' => ["#{logs_dir}/error.log","warn"],
+  		}
+  	end
 
 	template "/etc/init.d/nginx-#{new_resource.service_id}" do
   		source "init-script-nginx.erb"
