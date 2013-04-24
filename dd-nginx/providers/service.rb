@@ -54,7 +54,7 @@ action :create do
 
   	template "#{docroot_dir}/index.html" do
   		source "index.html.erb"
-  		cookbook new_resource.cookbook_for_tpl
+  		cookbook new_resource.cookbook
 		owner new_resource.service_user
 		group new_resource.service_group
 		mode 0644
@@ -67,7 +67,7 @@ action :create do
 
 	template "/etc/init.d/#{new_resource.service_id}-nginx" do
   		source "init-script-nginx.erb"
-  		cookbook new_resource.cookbook_for_tpl
+  		cookbook new_resource.cookbook
 		owner 'root'
 		group 'root'
 		mode 0755
