@@ -6,7 +6,7 @@
 #
 #
 
-actions :create, :delete
+actions :create, :delete, :start, :stop, :restart, :reload, :status
 
 default_action :create
 
