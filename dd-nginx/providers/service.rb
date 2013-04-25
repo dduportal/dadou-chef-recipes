@@ -126,7 +126,7 @@ action :create do
   		})
   	end
 
-  	dd_nginx_service "#{new_resource.service_id}" do
+  	service "#{new_resource.service_id}" do
   		action :start
   	end
 end
@@ -136,31 +136,36 @@ action :delete do
 end
 
 action :start do
-	service "#{new_resource.service_id}" do
+	service "#{new_resource.service_id} start" do
+		service_name "#{new_resource.service_id}"
 		action :start
 	end
 end
 
 action :stop do
-	service "#{new_resource.service_id}" do
+	service "#{new_resource.service_id} stop" do
+		service_name "#{new_resource.service_id}"
 		action :stop
 	end
 end
 
 action :restart do
-	service "#{new_resource.service_id}" do
+	service "#{new_resource.service_id} restart" do
+		service_name "#{new_resource.service_id}"
 		action :restart
 	end
 end
 
 action :reload do
-	service "#{new_resource.service_id}" do
+	service "#{new_resource.service_id} reload" do
+		service_name "#{new_resource.service_id}"
 		action :reload
 	end
 end
 
 action :status do
-	service "#{new_resource.service_id}" do
+	service "#{new_resource.service_id} status" do
+		service_name "#{new_resource.service_id}"
 		action :status
 	end
 end
