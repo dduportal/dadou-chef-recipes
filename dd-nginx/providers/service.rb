@@ -67,9 +67,10 @@ action :create do
   		})
   	end
 
-  	## Configuration of default nginx
+  	#### Configuration of nginx
+  	## nginx.conf
   	nginx_conf_hash = {
-		'user' => 'www',
+		'user' => "new_resource.service_user",
 		'worker_processes' => 1,
 		'error_log' => ["#{logs_dir}/error.log","warn"],
 		'pid' => "#{nginx_pid_file}",
@@ -87,6 +88,27 @@ action :create do
 	}
   	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
   		nginx_conf nginx_conf_hash
+  	end
+
+  	## Adding default http vhost
+  	http_vhost_conf = {
+  		'listen' => '80',
+  		'server_name' => 'localhost',
+  		'access_log' => "#{logs_dir}/#{new_resource.service_id}-access.log",
+  		'location' => 
+  			'pattern' => "/",
+  			'content' => {
+  				'root' => "#{docroot_dir}",
+  				'index' => ["index.html","index.htm"],
+  			},
+  		}],
+  	}
+  	dd_nginx_conf_vhost "#{new_resource.service_id}" do
+  		nginx_service "#{new_resource.service_id}"
+  		nginx_vhosts_dir "#{conf_dir}/vhosts"
+  		nginx_user "#{new_resource.service_user}"
+  		nginx_group "#{new_resource.service_group}"
+  		vhost_conf http_vhost_conf.to_hash
   	end
 
 	template "/etc/init.d/#{new_resource.service_id}" do

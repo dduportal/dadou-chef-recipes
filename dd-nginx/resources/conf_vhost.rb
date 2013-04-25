@@ -1,13 +1,17 @@
 #
-# Create /srv/:client_id/:server_id
+# Cookbook Name:: nginx
+# Resource:: conf_vhost
+#
+# Copyright 2013, Damien DUPORTAL
+#
+#
 
-actions :create, :delete, :start, :restart, :reload, :stop, :status
+actions :add, :remove, :update
 
-default_action :create
-
-attribute :nginx_root_dir, :kind_of => String, :default => "/srv/webs"
-attribute :service_id, :kind_of => String, :name_attribute => true
-attribute :nginx_bin, :kind_of => String, :default => "/usr/sbin/nginx"
-attribute :service_user, :kind_of => String, :regex => Chef::Config[:user_valid_regex], :default => "www" 
-attribute :service_group, :kind_of => String, :regex => Chef::Config[:group_valid_regex], :default => "www"
+attribute :vhost_name, :kind_of => String, :name_attribute => true
+attribute :nginx_service, :kind_of => String, :required => true
+attribute :nginx_vhosts_dir, :kind_of => String, :required => true
+attribute :nginx_user, :kind_of => String, :regex => Chef::Config[:user_valid_regex], :default => "www"
+attribute :nginx_group, :kind_of => String, :regex => Chef::Config[:group_valid_regex]
+attribute :vhost_conf, :kind_of => [Hash, NilClass], :default => {}
 attribute :cookbook, :kind_of => String, :default => 'dd-nginx' # Use this to overwrite cookbook's templates provider
