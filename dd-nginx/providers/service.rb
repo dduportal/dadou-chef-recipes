@@ -136,7 +136,7 @@ action :create do
   	end
 
   	execute "notify service" do
-  		command ""
+  		command "ls"
   		notifies :enable, "service[#{new_resource.service_id}]", :immediately
   		notifies :start, "service[#{new_resource.service_id}]", :immediately
   		notifies :reload, "service[#{new_resource.service_id}]", :immediately
