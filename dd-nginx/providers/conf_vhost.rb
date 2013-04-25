@@ -32,7 +32,7 @@ end
 
 def render_vhost()
 
-	if new_resource.nginx_group == nil or new_resource.nginx_group.empty ? then
+	if new_resource.nginx_group == nil or new_resource.nginx_group.empty?
 		new_resource.nginx_group = "www"
 	end
 
