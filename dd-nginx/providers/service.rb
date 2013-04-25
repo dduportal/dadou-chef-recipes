@@ -111,6 +111,12 @@ action :create do
   		vhost_conf http_vhost_conf.to_hash
   	end
 
+  	service "#{new_resource.service_id}" do
+  		supports :restart => true, :reload => true
+  		service_name "#{new_resource.service_id}"
+  		action :nothing
+  	end
+
 	template "/etc/init.d/#{new_resource.service_id}" do
   		source "init-script-nginx.erb"
   		cookbook new_resource.cookbook
@@ -125,12 +131,6 @@ action :create do
     		'service_name' => new_resource.service_id,
     		'nginx_user' => new_resource.service_user,
   		})
-  	end
-
-  	service "#{new_resource.service_id}" do
-  		supports :restart => true, :reload => true
-  		service_name "#{new_resource.service_id}"
-  		action :nothing
   		notifies :enable, "service[#{new_resource.service_id}]", :immediately
   		notifies :start, "service[#{new_resource.service_id}]", :immediately
   		notifies :reload, "service[#{new_resource.service_id}]", :immediately
