@@ -46,8 +46,14 @@ else
 	end
 end
 
-service "nginx" do
+service "nginx disable" do
+	service_name "nginx"
 	action :disable
-  	notifies :stop, "service[nginx]", :immediately
+end
+
+service "nginx stop" do
+	service_name "nginx"
+	action :stop
+	only_if "service nginx status"
 end
 
