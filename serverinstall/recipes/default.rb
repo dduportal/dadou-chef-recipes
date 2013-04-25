@@ -49,7 +49,7 @@ end
 ## Install Nginx for reverse proxy and creating service
 include_recipe "dd-nginx"
 
-dd_nginx_service "nginx-reverseproxy" do
+dd_nginx_service "reverseproxy" do
 	action :create
 end
 
