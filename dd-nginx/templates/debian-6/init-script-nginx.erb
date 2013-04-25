@@ -55,7 +55,7 @@ do_stop()
 
 do_reload() {
     #
-    start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDFILE --name $NAME
+    start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDFILE --exec $DAEMON 
     RETVAL="$?"
     return "$RETVAL"
 }
@@ -71,7 +71,7 @@ do_configtest() {
         esac
         shift
     fi
-    $DAEMON -t $FLAG -c $CONFFILE
+    $DAEMON -t $FLAG $DAEMON_ARGS
     RETVAL="$?"
     return $RETVAL
 }
@@ -80,11 +80,11 @@ do_upgrade() {
     OLDBINPIDFILE=$PIDFILE.oldbin
 
     do_configtest -q || return 6
-    start-stop-daemon --stop --signal USR2 --quiet --pidfile $PIDFILE --name $NAME
+    start-stop-daemon --stop --signal USR2 --quiet --pidfile $PIDFILE --exec $DAEMON 
     RETVAL="$?"
     sleep 1
     if [ -f $OLDBINPIDFILE -a -f $PIDFILE ]; then
-        start-stop-daemon --stop --signal QUIT --quiet --pidfile $OLDBINPIDFILE --name $NAME
+        start-stop-daemon --stop --signal QUIT --quiet --pidfile $OLDBINPIDFILE --exec $DAEMON 
         RETVAL="$?"
     else
         echo $"Upgrade failed!"
