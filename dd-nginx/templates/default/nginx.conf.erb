@@ -7,6 +7,6 @@
     <% value.each do |directive, value| %><%= directive %> <% if value.kind_of?(Array) 
         %>  <%= value.join(" ") %><% 
     else %> <%= value %><% end %>;
-    <% end %>
+        <% end %>
 }<% elsif value.kind_of?(Array) %><%= value.join(" ") %>;<% else %><%= value %>;<% end %>
 <% end %>

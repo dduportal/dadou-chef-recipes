@@ -80,7 +80,7 @@ action :create do
 			'default_type' => 'application/octet-stream',
 			'log_format' => ["main","'$remote_addr - $remote_user [$time_local] \"$request\" '","'$status $body_bytes_sent \"$http_referer\" '","'\"$http_user_agent\" \"$http_x_forwarded_for\"'"],
 			'access_log' => ["#{logs_dir}/access.log","main"],
-			'send_file' => "on",
+			'sendfile' => "on",
 			'keepalive_timeout' => "on",
 			'include' => "#{conf_dir}/vhosts/*.conf",
 		}
