@@ -126,9 +126,13 @@ action :create do
   		})
   	end
 
-  	service "#{new_resource.service_id}" do
-  		action :restart
+  	service "nginx-#{new_resource.service_id}" do
+  		supports :restart => true, :reload => true
+  		action :enable
+  		notifies :reload, "service[nginx-#{new_resource.service_id}]", :immediately
   	end
+
+
 end
 
 action :delete do
