@@ -33,10 +33,10 @@ service "sysstat" do
 end
 
 ## Installing Virtualbox
-include_recipe "virtualbox"
+#include_recipe "virtualbox"
 
 ## And then vagrant
-include_recipe "vagrant"
+#include_recipe "vagrant"
 
 ## Creating our system users
 node.default['serverinstall']['system_users'].each do | system_user |
