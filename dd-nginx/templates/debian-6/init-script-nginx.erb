@@ -12,10 +12,11 @@
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="nginx service - <%= @service_name %>"
+USER="<%= @nginx_user %>"
 NAME="<%= @service_name %>"
 CONFFILE="<%= @nginx_conf_dir %>/nginx.conf"
 ROOT_DIR="<%= @nginx_root_dir %>"
-DAEMON="<%= @nginx_bin %>"
+DAEMON=<%= @nginx_bin %>
 DAEMON_ARGS="-c $CONFFILE -p $ROOT_DIR"
 PIDFILE="<%= @nginx_tmp_dir %>/nginx.pid"
 SCRIPTNAME=/etc/init.d/$NAME
@@ -31,7 +32,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 do_start()
 {
-    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --name $NAME \
+    start-stop-daemon --start --quiet --user $USER --pidfile $PIDFILE --exec $DAEMON \
         $DAEMON_ARGS
     RETVAL="$?"
     return "$RETVAL"

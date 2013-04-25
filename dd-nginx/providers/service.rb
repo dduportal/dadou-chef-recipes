@@ -123,6 +123,7 @@ action :create do
     		'nginx_tmp_dir' => tmp_dir,
     		'nginx_bin' => new_resource.nginx_bin,
     		'service_name' => new_resource.service_id,
+    		'nginx_user' => new_resource.service_user,
   		})
   	end
 
