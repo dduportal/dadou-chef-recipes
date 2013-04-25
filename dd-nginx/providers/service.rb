@@ -95,13 +95,13 @@ action :create do
   		'listen' => '80',
   		'server_name' => 'localhost',
   		'access_log' => "#{logs_dir}/#{new_resource.service_id}-access.log",
-  		'location' => 
+  		'location' => {
   			'pattern' => "/",
   			'content' => {
   				'root' => "#{docroot_dir}",
   				'index' => ["index.html","index.htm"],
   			},
-  		}],
+  		},
   	}
   	dd_nginx_conf_vhost "#{new_resource.service_id}" do
   		nginx_service "#{new_resource.service_id}"
