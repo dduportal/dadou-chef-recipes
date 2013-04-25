@@ -70,7 +70,7 @@ action :create do
   	#### Configuration of nginx
   	## nginx.conf
   	nginx_conf_hash = {
-		'user' => "new_resource.service_user",
+		'user' => "#{new_resource.service_user}",
 		'worker_processes' => 1,
 		'error_log' => ["#{logs_dir}/error.log","warn"],
 		'pid' => "#{nginx_pid_file}",
