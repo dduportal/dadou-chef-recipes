@@ -138,13 +138,13 @@ action :create do
   	service "#{new_resource.service_id} start" do
   		service_name "#{new_resource.service_id}"
   		action :start
-  		only_if "service #{new_resource.service_id}"
+  		not_if "service #{new_resource.service_id} status"
   	end
 
   	service "#{new_resource.service_id} reload" do
   		service_name "#{new_resource.service_id}"
   		action :reload
-  		not_if "service #{new_resource.service_id}"
+  		only_if "service #{new_resource.service_id} status"
   	end
 
 end
