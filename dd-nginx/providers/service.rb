@@ -127,7 +127,7 @@ action :create do
   	end
 
   	service "#{new_resource.service_id}" do
-  		action :start
+  		action :restart
   	end
 end
 
