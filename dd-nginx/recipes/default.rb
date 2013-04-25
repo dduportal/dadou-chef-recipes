@@ -48,8 +48,6 @@ end
 
 ## We have to stop and disable the default nginx service (yes we don't use default :-D)
 service "nginx" do
-	action :stop
-end
-service "nginx" do
 	action :disable
+	notifies :stop, service["nginx"]
 end
