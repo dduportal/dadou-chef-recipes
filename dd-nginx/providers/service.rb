@@ -132,14 +132,19 @@ action :create do
   	service "#{new_resource.service_id}" do
   		supports :restart => true, :reload => true
   		service_name "#{new_resource.service_id}"
-  		action :nothing
+  		action :enable
   	end
 
-  	execute "notify service" do
-  		command "ls"
-  		notifies :enable, "service[#{new_resource.service_id}]", :immediately
-  		notifies :start, "service[#{new_resource.service_id}]", :immediately
-  		notifies :reload, "service[#{new_resource.service_id}]", :immediately
+  	service "#{new_resource.service_id} start" do
+  		service_name "#{new_resource.service_id}"
+  		action :start
+  		not_if "service #{new_resource.service_id}"
+  	end
+
+  	service "#{new_resource.service_id} reload" do
+  		service_name "#{new_resource.service_id}"
+  		action :reload
+  		only_if "service #{new_resource.service_id}"
   	end
 
 end
