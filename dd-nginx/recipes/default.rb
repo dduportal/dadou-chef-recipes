@@ -29,6 +29,9 @@ when "centos","rhel","fedora"
 	end
 end
 
+service "nginx" do
+	action :nothing
+end
 # Cas of missing attributes
 if node['nginx']['packagename'] == nil or node['nginx']['packagename'].empty?
 	node.set['nginx']['packagename'] = "nginx"
@@ -39,15 +42,14 @@ if node['nginx']['packagename'] == nil or node['nginx']['packagename'].empty?
 	package node['nginx']['packagename'] do
 		action :install
 		version node['nginx']['version']
+		notifies :stop, service["nginx"], :immediately
+		notifies :disable, service["nginx"], :immediately
 	end
 else
 	package node['nginx']['packagename'] do
 		action :install
+		notifies :stop, service["nginx"], :immediately
+		notifies :disable, service["nginx"], :immediately
 	end
 end
 
-## We have to stop and disable the default nginx service (yes we don't use default :-D)
-service "nginx" do
-	action :disable
-	notifies :stop, service["nginx"]
-end
