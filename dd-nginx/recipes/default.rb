@@ -42,14 +42,14 @@ if node['nginx']['packagename'] == nil or node['nginx']['packagename'].empty?
 	package node['nginx']['packagename'] do
 		action :install
 		version node['nginx']['version']
-		notifies :stop, service["nginx"], :immediately
-		notifies :disable, service["nginx"], :immediately
+		notifies :stop, "service[nginx]", :immediately
+		notifies :disable, "service[nginx]", :immediately
 	end
 else
 	package node['nginx']['packagename'] do
 		action :install
-		notifies :stop, service["nginx"], :immediately
-		notifies :disable, service["nginx"], :immediately
+		notifies :stop, "service[nginx]", :immediately
+		notifies :disable, "service[nginx]", :immediately
 	end
 end
 
