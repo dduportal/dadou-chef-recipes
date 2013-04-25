@@ -83,7 +83,11 @@ action :create do
 			'access_log' => ["#{logs_dir}/access.log","main"],
 			'sendfile' => "on",
 			'keepalive_timeout' => "65",
-			'include' => "#{conf_dir}/vhosts/*.conf",
+			#'include' => "#{conf_dir}/vhosts/*.conf",
+			'server' => {
+				'listen' => '80',
+				'server_name' => 'localhost',
+			},
 		}
 	}
   	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
