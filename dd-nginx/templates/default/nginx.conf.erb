@@ -5,7 +5,7 @@
 <% def get_nginx_directive(key, value, prefix = "")
 	content = prefix + "#{key} "
 	if value.kind_of?(Hash)
-		content += get_nginx_directive_hash(value)
+		content += get_nginx_directive_hash(value, "\t")
 	elsif value.kind_of?(Array)
 		value.each do |subValue|
 			if subValue.kind_of?(Hash)
