@@ -9,7 +9,7 @@
 	elsif value.kind_of?(Array)
 		value.each do |subValue|
 			if subValue.kind_of?(Hash)
-				content += get_nginx_directive_hash(value,"\t")
+				content += get_nginx_directive_hash(value)
 			end
 		end
 	else
@@ -21,7 +21,7 @@ end
 def get_nginx_directive_hash(hash_directive, prefix = "")
 	content = prefix + "{\n"
 	hash_directive.each do | key, value |
-		content += prefix + get_nginx_directive(key,value, prefix + "\t")
+		content += prefix + "\t" + get_nginx_directive(key,value, prefix + "\t")
 	end
 	content += prefix + "}\n"
 	return content
