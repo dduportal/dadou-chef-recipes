@@ -129,11 +129,12 @@ action :create do
 
   	service "#{new_resource.service_id}" do
   		supports :restart => true, :reload => true
-  		action :enable
+  		service_name "#{new_resource.service_id}"
+  		action :nothing
+  		notifies :enable, "service[#{new_resource.service_id}]", :immediately
   		notifies :start, "service[#{new_resource.service_id}]", :immediately
-  		notifies :reload, "service[#{new_resource.service_id}]", :delayed
+  		notifies :reload, "service[#{new_resource.service_id}]", :immediately
   	end
-
 
 end
 
