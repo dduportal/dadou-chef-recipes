@@ -32,7 +32,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 do_start()
 {
-    start-stop-daemon --start --quiet --user $USER --pidfile $PIDFILE --exec $DAEMON \
+    start-stop-daemon --start --quiet --user $USER --pidfile $PIDFILE --exec $DAEMON -- \
         $DAEMON_ARGS
     RETVAL="$?"
     return "$RETVAL"
