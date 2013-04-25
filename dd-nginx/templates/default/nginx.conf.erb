@@ -9,10 +9,10 @@
     			%><%= directive %> <% if value.kind_of?(Array) 
         			%>  <%= value.join(" ") %><% 
     			else %> <%= value %><% 
-    			end %>;<% 
-    		end %>}<% 
+    			end %>;
+<% 			end %>}<% 
     	elsif value.kind_of?(Array) 
-    		%><%= value.join(" ") %>;<% 
-    	else %><%= value %>;<% 
+    		%><%= value.join(" ") %>;
+<% 		else %><%= value %>;<% 
     	end
 end %>
