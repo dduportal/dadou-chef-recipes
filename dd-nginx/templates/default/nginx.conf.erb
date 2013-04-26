@@ -8,15 +8,22 @@
 		content += get_nginx_directive_hash(value, prefix )
 	elsif value.kind_of?(Array)
 		value.each do |subValue|
+			useSemiColon = true
 			if subValue.kind_of?(Hash)
 				content += get_nginx_directive_hash(subValue, prefix)
+				useSemiColon = false
 			elsif subValue.kind_of?(Array)
 				content += subValue.join(" ")
+				useSemiColon = true
 			else
 				content += "#{subValue} "
+				useSemiColon = true
 			end
 		end
-		content += ";\n"
+		if useSemiColon
+			content += ";"
+		end 
+		content += "\n"
 	else
 		content += "#{value};\n"
 	end
