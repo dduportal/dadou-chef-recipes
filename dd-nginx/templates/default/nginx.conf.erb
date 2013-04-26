@@ -7,8 +7,8 @@
 	if value.kind_of?(Hash)
 		content += get_nginx_directive_hash(value, prefix )
 	elsif value.kind_of?(Array)
+		useSemiColon = true
 		value.each do |subValue|
-			useSemiColon = true
 			if subValue.kind_of?(Hash)
 				content += get_nginx_directive_hash(subValue, prefix)
 				useSemiColon = false
