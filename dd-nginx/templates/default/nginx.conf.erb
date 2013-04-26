@@ -5,11 +5,11 @@
 <% def get_nginx_directive(key, value, prefix = "")
 	content = prefix + "#{key} "
 	if value.kind_of?(Hash)
-		content += get_nginx_directive_hash(value, prefix + "\t")
+		content += get_nginx_directive_hash(value, prefix )
 	elsif value.kind_of?(Array)
 		value.each do |subValue|
 			if subValue.kind_of?(Hash)
-				content += get_nginx_directive_hash(value, prefix + "\t")
+				content += get_nginx_directive_hash(value, prefix )
 			end
 		end
 	else
@@ -19,7 +19,7 @@
 end 
 
 def get_nginx_directive_hash(hash_directive, prefix = "")
-	content = prefix + "{\n"
+	content = "{\n"
 	hash_directive.each do | key, value |
 		content += prefix + "\t" + get_nginx_directive(key,value, prefix + "\t")
 	end
