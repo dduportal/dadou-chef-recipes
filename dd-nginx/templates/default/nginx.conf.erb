@@ -11,11 +11,12 @@
 			if subValue.kind_of?(Hash)
 				content += get_nginx_directive_hash(value, prefix )
 			elsif subValue.kind_of?(Array)
-				content += subValue.join(" ") + ";\n"
+				content += subValue.join(" ")
 			else
-				content += "#{subValue};\n"
+				content += "#{subValue} "
 			end
 		end
+		content += ";\n"
 	else
 		content += "#{value};\n"
 	end
