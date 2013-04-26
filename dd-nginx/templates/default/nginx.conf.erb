@@ -10,6 +10,10 @@
 		value.each do |subValue|
 			if subValue.kind_of?(Hash)
 				content += get_nginx_directive_hash(value, prefix )
+			elsif subValue.kind_of?(Array)
+				content += subValue.join(" ") + ";\n"
+			else
+				content += "#{subValue};\n"
 			end
 		end
 	else
