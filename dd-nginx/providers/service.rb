@@ -87,6 +87,10 @@ action :create do
 			'server' => {
 				'listen' => '80',
 				'server_name' => 'localhost',
+				'location' => ["/", {
+					'root' => "#{docroot_dir}",
+					'index' => ["index.html","index.htm"],
+					}],
 			},
 		}
 	}
