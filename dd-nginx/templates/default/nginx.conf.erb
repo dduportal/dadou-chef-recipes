@@ -9,7 +9,7 @@
 	elsif value.kind_of?(Array)
 		value.each do |subValue|
 			if subValue.kind_of?(Hash)
-				content += get_nginx_directive_hash(subValue, prefix + "\t")
+				content += get_nginx_directive_hash(subValue, prefix)
 			elsif subValue.kind_of?(Array)
 				content += subValue.join(" ")
 			else
