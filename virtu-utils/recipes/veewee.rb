@@ -8,7 +8,7 @@
 
 ## Installing all necessary for building
 include_recipe "build-essential"
-include_recipe "rvm::install"
+include_recipe "rvm::ruby_192"
 
 ## Getting source code
 directory "#{node['veewee']['installDir']}" do
