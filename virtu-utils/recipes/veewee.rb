@@ -11,7 +11,7 @@ include_recipe "build-essential"
 
 node['veewee']['dependencies'].each do | pkg |
 	package "#{pkg}" do
-		action :installDir
+		action :install
 	end
 end
 
