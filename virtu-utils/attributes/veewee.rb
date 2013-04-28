@@ -6,6 +6,6 @@
 #
 #
 
-node.default['veewee']['dependencies'] = ["ibgdbm-dev", "pkg-config", "libffi-dev"]
+node.default['veewee']['dependencies'] = ["libgdbm-dev", "pkg-config", "libffi-dev"]
 node.default['veewee']['gitUrl'] = "https://github.com/jedi4ever/veewee.git"
 node.default['veewee']['installDir'] = "/usr/local/veewee"
