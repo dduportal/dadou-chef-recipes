@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: virtualbox
-# Recipe:: default
+# Cookbook Name:: virtu-utils
+# Recipe:: virtualbox
 #
 # Copyright 2013, Damien DUPORTAL
 #

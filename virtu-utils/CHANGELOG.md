@@ -1,10 +1,10 @@
-# CHANGELOG for virtualbox
+# CHANGELOG for virtu-utils
 
-This file is used to list changes made in each version of virtualbox.
+This file is used to list changes made in each version of virtu-utils.
 
 ## 0.1.0:
 
-* Initial release of virtualbox
+* Initial release of virtu-utils
 * Installation of standard version (Oracle's one) for Debian and Ubuntu
 
 - - -
