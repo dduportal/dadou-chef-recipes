@@ -9,5 +9,6 @@ depends "build-essential" # opscode
 depends "apt" # opscode
 depends "vagrant" # opscode
 depends "yum" # opscode
+depends 'rvm' # opscode
 depends "dd-nginx"
 depends "virtu-utils"

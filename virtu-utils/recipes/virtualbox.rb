@@ -7,10 +7,11 @@
 #
 
 include_recipe "build-essential"
+include_recipe "apt" if [ 'debian', 'ubuntu' ].member? node[:platform]
+include_recipe "yum" if [ 'centos', 'rhel' ].member? node[:platform]
 
 case node['platform']
 when "ubuntu", "debian"
-	include_recipe "apt"
 
 	# Adding apt repository for Oracle VirtualBox
 	apt_repository "virtualbox" do

@@ -7,4 +7,5 @@
 #
 
 
-node.default['veewee']['dependencies'] = ["libxslt1-dev","libxml2-dev","zlib1g-dev", "ruby", "rubygems"]
+node.default['veewee']['gitUrl'] = "https://github.com/jedi4ever/veewee.git"
+node.default['veewee']['installDir'] = "/usr/local/veewee"
