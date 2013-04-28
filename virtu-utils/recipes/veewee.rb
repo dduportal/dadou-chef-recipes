@@ -8,6 +8,13 @@
 
 ## Installing all necessary for building
 include_recipe "build-essential"
+
+node['veewee']['dependencies'].each do | pkg |
+	package "#{pkg}" do
+		action :installDir
+	end
+end
+
 include_recipe "rvm::ruby_192"
 
 ## Getting source code
