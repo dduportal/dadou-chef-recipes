@@ -8,7 +8,6 @@
 
 action :add do
 	Chef::Log.info("Adding a new vhost : #{new_resource.nginx_vhosts_dir}/#{new_resource.vhost_name}")
-
 	render_vhost()
 end
 

@@ -83,15 +83,8 @@ action :create do
 			'access_log' => ["#{logs_dir}/access.log","main"],
 			'sendfile' => "on",
 			'keepalive_timeout' => "65",
-			#'include' => "#{conf_dir}/vhosts/*.conf",
-			'server' => {
-				'listen' => '80',
-				'server_name' => 'localhost',
-				'location' => ["/", {
-					'root' => "#{docroot_dir}",
-					'index' => ["index.html","index.htm"],
-					}],
-			},
+			'include' => "#{conf_dir}/vhosts/*.conf",
+			
 		}
 	}
   	dd_nginx_conf_root "#{conf_dir}/nginx.conf" do
@@ -100,16 +93,15 @@ action :create do
 
   	## Adding default http vhost
   	http_vhost_conf = {
-  		'listen' => '80',
-  		'server_name' => 'localhost',
-  		'access_log' => "#{logs_dir}/#{new_resource.service_id}-access.log",
-  		'location' => {
-  			'pattern' => "/",
-  			'content' => {
-  				'root' => "#{docroot_dir}",
-  				'index' => ["index.html","index.htm"],
-  			},
-  		},
+  		'server' => {
+			'listen' => '80',
+			'server_name' => 'localhost',
+  			'access_log' => "#{logs_dir}/#{new_resource.service_id}-access.log",
+			'location' => ["/", {
+				'root' => "#{docroot_dir}",
+				'index' => ["index.html","index.htm"],
+				}],
+		},
   	}
   	dd_nginx_conf_vhost "#{new_resource.service_id}" do
   		nginx_service "#{new_resource.service_id}"
