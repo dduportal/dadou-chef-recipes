@@ -8,6 +8,8 @@
 
 actions :add, :remove, :update
 
+default_action :update
+
 attribute :vhost_name, :kind_of => String, :name_attribute => true
 attribute :nginx_service, :kind_of => String, :required => true
 attribute :nginx_vhosts_dir, :kind_of => String, :required => true

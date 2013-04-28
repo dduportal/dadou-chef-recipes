@@ -44,13 +44,13 @@ def render_vhost()
 
 	# Setting nginx root
 	template get_vhost_full_path() do
-  		source "vhost.conf.erb"
+  		source "nginx.conf.erb"
   		cookbook new_resource.cookbook
   		user new_resource.nginx_user
   		group new_resource.nginx_group
 		mode 0644
   		variables({
-  			'nvhost_conf' => new_resource.vhost_conf.to_hash
+  			'nginx_conf' => new_resource.vhost_conf.to_hash
   		})
   	end
 
