@@ -38,6 +38,9 @@ include_recipe "virtu-utils::virtualbox"
 ## And then vagrant (from opscode one)
 include_recipe "vagrant"
 
+## Now Veewee (yes we need tu build base box)
+include_recipe "virtu-utils::veewee"
+
 ## Creating our system users
 node.default['serverinstall']['system_users'].each do | system_user |
 	user "#{system_user}" do
