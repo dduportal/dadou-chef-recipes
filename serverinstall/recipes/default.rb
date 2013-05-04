@@ -56,3 +56,10 @@ dd_nginx_service "nginx-reverseproxy" do
 	action :create
 end
 
+## Configuring proxy
+
+case node['platform']
+when "ubuntu" then
+	include_recipe "ufw"
+end
+
