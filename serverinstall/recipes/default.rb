@@ -27,7 +27,7 @@ end
 ## Create our standard users
 node['serverinstall']['users'].each do | user |
 	user "#{user}" do
-		action :createuser "random" do
+		action :create
   		comment "a server user"
   		gid "users"
   		home "/home/#{user}"
