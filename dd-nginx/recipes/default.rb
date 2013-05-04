@@ -7,6 +7,7 @@
 #
 
 ## Adding package manager'OS specific repository
+pkg_manager_opts = ""
 case node['platform']
 when "ubuntu","debian"
 	include_recipe "apt"
@@ -18,6 +19,8 @@ when "ubuntu","debian"
 	  key "http://nginx.org/keys/nginx_signing.key"
 	  deb_src true
 	end
+
+	pkg_manager_opts = "-t nginx"
 when "centos","rhel","fedora"
 	include_recipe "yum"
 
@@ -39,10 +42,12 @@ if node['nginx']['packagename'] == nil or node['nginx']['packagename'].empty?
 	package node['nginx']['packagename'] do
 		action :install
 		version node['nginx']['version']
+		options pkg_manager_opts
 	end
 else
 	package node['nginx']['packagename'] do
 		action :install
+		options pkg_manager_opts
 	end
 end
 
