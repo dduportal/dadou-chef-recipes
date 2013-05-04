@@ -20,7 +20,7 @@ when "ubuntu","debian"
 	  deb_src true
 	end
 
-	pkg_manager_opts = "-t nginx"
+	pkg_manager_opts = "-t #{node['lsb']['codename'] }/nginx"
 when "centos","rhel","fedora"
 	include_recipe "yum"
 
