@@ -46,7 +46,7 @@ end
 include_recipe "virtu-utils::virtualbox"
 
 ## And then vagrant (from opscode one)
-vagrant_found_version = %x(vagrant -v | awk '{print $3}')
+vagrant_found_version = %x(vagrant -v | awk '{print $3}').chomp
 log "DEBUG : Found vagrant with version : #{vagrant_found_version}"
 if ! vagrant_found_version.eql?(node['vagrant']['version'])
 	log "|#{vagrant_found_version}| <> |#{node['vagrant']['version']}| => calling vagrant recipe"
