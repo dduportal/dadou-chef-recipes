@@ -48,7 +48,10 @@ include_recipe "virtu-utils::virtualbox"
 ## And then vagrant (from opscode one)
 vagrant_found_version = %x(vagrant -v | awk '{print $3}')
 log "DEBUG : Found vagrant with version : #{vagrant_found_version}"
-include_recipe "vagrant" if (vagrant_found_version != node['vagrant']['version'])
+if "#{vagrant_found_version}" != "#{node['vagrant']['version']}"
+	log "vagrant_found_version <> node['vagrant']['version'] => calling vagrant recipe"
+	include_recipe "vagrant" 
+end
 
 ## Now Veewee (yes we need tu build base box)
 #include_recipe "virtu-utils::veewee"
