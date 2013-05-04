@@ -12,7 +12,7 @@ when "ubuntu","debian"
 	include_recipe "apt"
 
 	apt_repository "nginx" do
-	  uri "http://nginx.org/packages/debian/"
+	  uri "http://nginx.org/packages/#{node['platform']}/"
 	  distribution "#{node['lsb']['codename'] }"
 	  components ["nginx"]
 	  key "http://nginx.org/keys/nginx_signing.key"
