@@ -24,16 +24,6 @@ node['serverinstall']['packages'].each do | pkg |
 	end
 end
 
-## Create our standard users
-node['serverinstall']['users'].each do | user |
-	user "#{user}" do
-		action :create
-  		comment "a server user"
-  		gid "users"
-  		home "/home/#{user}"
-	end
-end
-
 ## Activate sysstats
 execute "activate-systat" do
 	command "sed -i 's/ENABLED=\"false\"/ENABLED=\"true\"/g' /etc/default/sysstat"
