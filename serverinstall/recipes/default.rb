@@ -26,7 +26,12 @@ end
 
 ## Create our standard users
 node['serverinstall']['users'].each do | user |
-	user "#{user}"
+	user "#{user}" do
+		action :createuser "random" do
+  		comment "a server user"
+  		gid "users"
+  		home "/home/#{user}"
+	end
 end
 
 ## Activate sysstats
