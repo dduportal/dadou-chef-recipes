@@ -1,3 +1,4 @@
 site :opscode
 
 metadata
+cookbook 'ufw', git: 'https://github.com/opscode-cookbooks/ufw'
