@@ -1,8 +1,0 @@
-<% @upstream_list.each do |name, workers| -%>
- upstream <%= name %> {
- 	<%= "sticky;" if @has_sticky %>
- 	<% workers.each do |worker| -%>
-	server <%= worker %> max_fails=3 fail_timeout=10s;
-	<% end -%>
-}
-<% end -%>
