@@ -17,8 +17,10 @@ node.set['vagrant']['checksum'] = "061ea2fcc5a25c037acd07bf606b0ed0"
 node.set['vagrant']['plugins'] = ["vagrant-vbguest"]
 node.set['nginx']['version'] = "1.2.8"
 node.default['firewall']['rules'] = [
-	'ssh' => {
-		'port' => '22',
-		'action' => 'allow',
-	},
+	{
+		'ssh' => {
+			'port' => '22',
+			'action' => 'allow',
+		},
+	}
 ]
