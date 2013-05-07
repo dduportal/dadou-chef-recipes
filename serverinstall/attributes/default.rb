@@ -16,11 +16,41 @@ node.set['vagrant']['url'] = "http://files.vagrantup.com/packages/7e400d00a3c5a0
 node.set['vagrant']['checksum'] = "061ea2fcc5a25c037acd07bf606b0ed0"
 node.set['vagrant']['plugins'] = ["vagrant-vbguest"]
 node.set['nginx']['version'] = "1.2.8"
-node.default['firewall']['rules'] = [
-	{
+node.default['firewall']['rules'] = [{
 		'ssh' => {
 			'port' => '22',
 			'action' => 'allow',
-		},
-	}
+		},},{
+		'http' => {
+			'port' => '80',
+			'action' => 'allow',
+		},},{
+		'https' => {
+			'port' => '443',
+			'action' => 'allow',
+		},},{
+		'http2' => {
+			'port' => '3080',
+			'action' => 'allow',
+		},},{
+		'https2' => {
+			'port' => '3443',
+			'action' => 'allow',
+		},},{
+		'http3' => {
+			'port' => '4080',
+			'action' => 'allow',
+		},},{
+		'https3' => {
+			'port' => '4443',
+			'action' => 'allow',
+		},},{
+		'http4' => {
+			'port' => '5080',
+			'action' => 'allow',
+		},},{
+		'https4' => {
+			'port' => '5443',
+			'action' => 'allow',
+		},}
 ]
