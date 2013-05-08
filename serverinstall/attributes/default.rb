@@ -52,5 +52,13 @@ node.default['firewall']['rules'] = [{
 		'https4' => {
 			'port' => '5443',
 			'action' => 'allow',
+		},},{
+		'veewee_kickstart' => {
+			'port' => '7122',
+			'action' => 'allow',
+		},},{
+		'veewee-ssh' => {
+			'port' => '7222',
+			'action' => 'allow',
 		},}
 ]
