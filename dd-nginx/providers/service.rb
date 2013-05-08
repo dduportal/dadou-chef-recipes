@@ -94,7 +94,7 @@ action :create do
   	## Adding default http vhost
   	http_vhost_conf = {
   		'server' => {
-			'listen' => '80',
+			'listen' => ['80','default_server'],
 			'server_name' => 'localhost',
   			'access_log' => "#{logs_dir}/#{new_resource.service_id}-access.log",
 			'location' => ["/", {
